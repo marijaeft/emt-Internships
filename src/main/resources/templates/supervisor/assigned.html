@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Internships</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @media (min-width: 700px) {
+            .responsive-flex {
+                flex-direction: row;
+            }
+
+        }
+        @media (max-width: 700px) {
+            .responsive-flex {
+                flex-direction: column;
+            }
+
+        }
+        .card:hover{
+            outline: #2A93D1 solid 3px;
+            transition: outline-width 250ms;
+        }
+    </style>
+</head>
+<body>
+<div class="Navbar h-[7vh] py-2 flex justify-between px-2 lg:px-16 shadow-xl w-full overflow-hidden">
+    <div class="flex flex-col justify-center">
+        <a href="/internships/">
+            <img style="height: 5vh;" th:src="@{/io.svg}"/>
+        </a>
+    </div>
+    <div class="flex">
+        <div class="flex flex-col justify-center">
+            <div class="flex rounded-xl border-2 border-black h-[6vh] text-[12px] md:text-md">
+                <div class="flex p-1">
+                    <h1 class="font-bold mx-0 md:mx-2 my-auto" th:text="${supervisor.getFullName()}"></h1>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col justify-center ml-2 md:ml-4" onclick="this.closest('form').submit();">
+            <img class="bg-red-600 h-[5.5vh] w-[5.5vh] rounded-lg" style="height: 5.5vh; width: 5.5vh; padding: 14px" th:src="@{/logout.svg}"/>
+        </div>
+    </div>
+</div>
+
+<div style="padding-top: 1rem; padding-left: 1rem; padding-right: 1rem;">
+    <form th:action="@{/internships/}" method="get">
+        <div style="display: flex; justify-content: space-between;" class="responsive-flex">
+            <div style="display:flex; flex-basis: 33.33%; flex-direction: row; color: white; margin-bottom: 1rem;">
+                <button name="filter" type="submit" value="current" style="width: 49%; padding: 0.5rem; color: #171717; border-radius: 0.75rem; margin-right: 2%; background-color: #EDEDED;">Тековни</button>
+                <button name="filter" type="submit" value="completed" style="width: 49%; padding: 0.5rem; border-radius: 0.75rem; margin-right: 2%; background-color: #2A93D1;">Назначени</button>
+            </div>
+        </div>
+    </form>
+    <div>
+        <div class="flex flex-col lg:flex-row justify-between text-offblack rounded-xl p-1 card mb-2" style="background-color:#EDEDED;" th:each="internship : ${supervisor_internships}">
+            <div class="flex p-3 infoIntern flex-col lg:flex-row">
+                <h1 class="mx-2 my-2 lg:my-0" style="color: #171717; font-weight: bold" th:text="${internship.getStudent().getName() + ' ' + internship.getStudent().getLastName()}"></h1>
+                <h1 class="mx-2 my-2 lg:my-0" th:text="${internship.getStudent().getIndex()}"></h1>
+                <h1 class="mx-2 my-2 lg:my-0" style="color: #171717; font-weight: bold" th:text="${internship.getId()}"></h1>
+                <h1 class="mx-2 my-2 lg:my-0" th:text="${internship.getStatus()}"></h1>
+            </div>
+            <div class="flex justify-between p-3 lg:p-0">
+                <form method="get" th:action="@{'/internships/' + ${internship.getId()}+'/'+ ${internship.getStudent().getIndex()}+'/'}">
+                    <button type="submit" class="rounded-lg h-max w-auto p-3 text-white" style="background-color: #2A93D1;">Details</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

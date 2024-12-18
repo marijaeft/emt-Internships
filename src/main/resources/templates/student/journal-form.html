@@ -1,0 +1,18 @@
+<form method="post" th:action="@{/internship-weeks/save}">
+    <input type="hidden" name="id" th:value="${week?.getId()}">
+    <input name="internshipId" type="hidden" th:value="${internship.getId()}">
+
+    <label for="startDate">Start Date:</label>
+    <input id="startDate" type="date" name="startDate" th:value="${week?.getStartDate()}">
+    <br>
+
+    <label for="endDate">End Date:</label>
+    <input id="endDate" type="date" name="endDate" th:value="${week?.getEndDate()}">
+    <br>
+
+    <label for="description">Description:</label>
+    <input id="description" type="text" name="description" th:value="${week?.getDescription()}">
+    <br>
+    <input id="index" type="hidden" name="index" th:value="${student?.getIndex()}">
+    <button type="submit">Save</button>
+</form>

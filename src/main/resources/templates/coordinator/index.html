@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="Navbar h-[7vh] py-2 flex justify-between px-2 lg:px-16 shadow-xl w-full overflow-hidden">
+    <div class="flex flex-col justify-center">
+        <a href="/internships/">
+            <img style="height: 5vh;" th:src="@{/io.svg}"/>
+        </a>
+    </div>
+    <div class="flex">
+        <div class="flex flex-col justify-center">
+            <div class="flex rounded-xl border-2 border-black h-[6vh] text-[12px] md:text-md">
+                <div class="flex p-1">
+                    <h1 class="font-bold mx-0 md:mx-2 my-auto" th:text="${professor.getName()}"></h1>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col justify-center ml-2 md:ml-4" onclick="this.closest('form').submit();">
+            <img class="bg-red-600 h-[5.5vh] w-[5.5vh] rounded-lg" style="height: 5.5vh; width: 5.5vh; padding: 14px" th:src="@{/logout.svg}"/>
+        </div>
+    </div>
+</div>
+<div class="p-4" style="display: flex; justify-content: start">
+<form method="post" th:if="${coordinator != null}" th:action="@{/coordinator/opt-out}">
+    <button class="rounded-lg h-max w-auto p-3 text-white" style="background-color: #2A93D1; margin-left: 4px; margin-right: 4px">Opt out</button>
+</form>
+    <form method="post" th:if="${coordinator == null}" th:action="@{/coordinator/opt-in}">
+        <button class="rounded-lg h-max w-auto p-3 text-white" style="background-color: #2A93D1; margin-right: 4px;">Opt in</button>
+    </form>
+
+</div>
+<div style="padding-top: 1rem; padding-left: 1rem; padding-right: 1rem;">
+      <div>
+        <div class="flex flex-col lg:flex-row justify-between text-offblack rounded-xl p-1 card mb-2" style="background-color:#EDEDED;" th:each="internship : ${internships}">
+            <div class="flex p-3 infoIntern flex-col lg:flex-row">
+                <h1 class="mx-2 my-2 lg:my-0" style="color: #171717; font-weight: bold" th:text="${internship.getStudent().getName() + ' ' + internship.getStudent().getLastName()}"></h1>
+                <h1 class="mx-2 my-2 lg:my-0" th:text="${internship.getStudent().getIndex()}"></h1>
+                <h1 class="mx-2 my-2 lg:my-0" style="color: #171717; font-weight: bold" th:text="${internship.getId()}"></h1>
+                <h1 class="mx-2 my-2 lg:my-0" th:text="${internship.getStatus()}"></h1>
+            </div>
+            <div class="flex justify-between p-3 lg:p-0">
+
+                <form th:action="@{'/internships/' + ${internship.getId()}+ '/'+${internship.getStudent().getIndex()}+'/'}">
+                    <button class="rounded-lg h-max w-auto p-3 text-white" style="background-color: #2A93D1;">Details</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>

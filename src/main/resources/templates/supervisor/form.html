@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create/Edit Supervisor</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+<h1 th:text="${supervisor.id == null} ? 'Create New Supervisor' : 'Edit Supervisor'"></h1>
+<form th:action="@{${supervisor.id == null} ? '/supervisor/create' : '/supervisor/edit/' + ${supervisor.id}}" th:object="${supervisor}" method="post">
+    <div>
+        <label for="company">Company:</label>
+        <select id="company" name="company.id" th:field="*{company.id}">
+            <option th:each="company : ${companies}" th:value="${company.id}" th:text="${company.name}"></option>
+        </select>
+    </div>
+    <div th:if="${supervisor.id == null}" >
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}" />
+    </div>
+    <div>
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" th:field="*{fullName}" />
+    </div>
+    <div>
+        <button type="submit" th:text="${supervisor.id == null} ? 'Create' : 'Update'"></button>
+    </div>
+</form>
+</body>
+</html>

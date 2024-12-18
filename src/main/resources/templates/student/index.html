@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+
+        .bgLogoBlur {
+            backdrop-filter: blur(80px);
+        }
+        .shadowCard {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+
+        div.circles > img {
+            margin-right : 5.5%;
+            margin-bottom : 3%;
+        }
+
+        div.circles > img:nth-child(6){
+            margin-right: 0;
+        }
+        div.circles > img:nth-child(12){
+            margin-right: 0;
+        }
+        @media (min-width: 700px) {
+            .responsive-flex {
+                flex-direction: row;
+            }
+
+        }
+        @media (max-width: 700px) {
+            .responsive-flex {
+                flex-direction: column;
+            }
+
+        }
+    </style>
+</head>
+<body>
+<div className="Navbar"
+     class="h-[7vh] py-2 flex justify-between px-2 lg:px-16 shadow-xl w-full overflow-hidden">
+    <div class="flex flex-col justify-center">
+        <a href="/internships/">
+            <img style="height: 5vh;" th:src="@{/io.svg}"/>
+        </a>
+    </div>
+    <div class="flex">
+        <div class="flex flex-col justify-center">
+            <div class="flex rounded-xl border-2 border-black h-[6vh] text-[12px] md:text-md">
+                <div class="flex p-1">
+                    <h1 class="font-bold mx-0 md:mx-2 w-fit my-auto" th:text="${student.getName() + ' ' + student.getLastName()}"></h1>
+                    <h1 className="mx-0 md:mx-2 w-fit my-auto" th:text="${' (' + student.getIndex() + ')'}"></h1>
+                </div>
+            </div>
+        </div>
+        <form method="post" th:action="@{'/logout'}">
+        <div class="flex flex-col justify-center ml-2 md:ml-4" onclick="this.closest('form').submit();">
+            <img class="bg-red-600 h-[5.5vh] w-[5.5vh] rounded-lg "  style="height: 5.5vh; width: 5.5vh; padding: 14px" th:src="@{/logout.svg}"/>
+        </div>
+        </form>
+    </div>
+
+</div>
+<div class="p-4" style="display: flex; justify-content: start">
+    <form method="get" th:action="@{'/internships/create'}">
+        <button style="background-color: #2A93D1"  class=" px-8 py-4 rounded-xl text-white font-bold text-lg lg:text-xl">Add new internship</button>
+    </form>
+</div>
+<div class="flex flex-col justify-center " style="height: 88vh" th:each="internship : ${internships}">
+    <div style="box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* shadow-2xl */
+                border-radius: 0.75rem; /* 12px rounded-xl */
+                width: fit-content; /* w-fit */
+                margin: 0 auto; /* mx-auto */
+                display: flex;">
+    </div>
+    <div class="flex flex-col lg:flex-row  shadowCard w-full lg:w-8/12 mx-auto mt-8" style="border-radius: 40px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);">
+        <div style="flex-basis: 25%;
+            border-top-left-radius: 40px;
+            border-bottom-left-radius: 40px;
+            display: flex;
+            justify-content: center;
+            background-image: url('/image1.png');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;">
+
+        <div class="flex flex-col justify-center h-full w-full bgLogoBlur">
+                <div class="flex justify-center">
+                    <img class=" m-8 lg:m-0 w-2/12 lg:w-6/12 h-auto" style="border-radius: 30px"  th:src="@{/image1.png}"/>
+                </div>
+            </div>
+        </div>
+        <div class="basis-3/4  flex-col p-8" style="display:flex; flex-basis: 75%">
+            <div class="flex justify-between">
+                <div class="flex flex-col">
+                    <h1 class="font-bold text-xl lg:text-4xl" th:text="${internship.getPosting().getPosition()}"></h1>
+                    <h3 class="text-md lg:text-2xl font-thin" th:text="${internship.getPosting().getCompany().getName()}"></h3>
+                </div>
+                <div class="flex justify-center">
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <h1 style="background-color: #333; /* Define your off-black color here */
+                   color: white;
+                   width: fit-content;
+                   padding: 0.5rem; /* 8px */
+                   padding-left: 1rem; /* 16px */
+                   padding-right: 1rem; /* 16px */
+                   font-size: 1.125rem; /* 18px */
+                   font-weight: bold;
+                   height: fit-content;
+                   border-radius: 0.75rem; /* 12px */" th:text="${internship.getJournal().size()}">
+
+                        </h1>
+                    </div>
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <h1 style="color: #333; /* Define your off-black color here */
+                   width: fit-content;
+                   padding-left: 0.5rem; /* 8px */
+                   padding-right: 0.5rem; /* 8px */
+                   font-size: 1rem; /* 16px */
+                   font-weight: bold;
+                   height: fit-content;" th:text="${'од '+internship.getPosting().getPlannedWeeks()+ ' недели'}">
+
+                        </h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class='flex mt-4 flex-wrap circles' >
+               <span class="m-2 circles" th:each="week : ${internship.getJournal()}">
+                <img class="rounded-full md:p-4"
+                     th:style="${internship.getStatus() == T(mk.ukim.finki.wp.internships.model.internships.InternshipStatus).DEPOSITED} ?
+'background-color: #73E860; border-radius: 50%; width: 80px; padding: 10px;' :
+'background-color: #bfbfbf; border-radius: 50%; width: 80px; padding: 10px;'"                     th:src="@{/check.svg}"/>
+                </span>
+            </div>
+            <div class="flex  lg:flex-row justify-between rounded-xl shadow-xl shadowCard mt-4">
+                <div class="flex justify-evenly w-full p-4 lg:p-0">
+                    <div class="flex flex-col justify-center">
+                        <div class="rounded-full  bg-red-600" style="width: 20px; height: 20px"></div>
+                    </div>
+                    <div className="flex flex-col justify-center" style="align-content: center" >
+                        <h1 class="ml-4 text-sm lg:text-2xl" th:text="${internship.getStatus()}"></h1>
+                    </div>
+                </div>
+                <form method="get" th:action="${'/internships/' + internship.getId()+ '/'+student.getIndex()+'/'}">
+                    <button style="background-color: #2A93D1"  class=" responsive-flex px-8 py-4 rounded-xl text-white font-bold text-lg lg:text-2xl">Дневник</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+</body>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Supervisors</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+<h1>List of Internship Supervisors</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Company</th>
+        <th>Email</th>
+        <th>Full Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="supervisor : ${supervisors}">
+        <td th:text="${supervisor.id}"></td>
+        <td th:text="${supervisor.company.name}"></td> <!-- Assuming Company has a 'name' property -->
+        <td th:text="${supervisor.email}"></td>
+        <td th:text="${supervisor.fullName}"></td>
+        <td>
+            <form th:action="@{'/supervisor/edit/' + ${supervisor.getId()}}">
+                <button type="submit">Edit</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<form th:action="@{/supervisor/create}">
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>
